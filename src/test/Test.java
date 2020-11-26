@@ -19,6 +19,12 @@ public class Test {
 		for(Author author : authors) {
 			System.out.println(author);
 		}
+		System.out.println("-----------------------------------------");
+		Author author = authorDao.read(2L);
+		System.out.println(author);
+		System.out.println("-----------------------------------------");
+		author = authorDao.read(123L);
+		System.out.println(author);
 		c.close();
 	}
 }

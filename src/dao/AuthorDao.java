@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,8 +23,25 @@ public class AuthorDao {
 	}
 
 	public Author read(Long id) throws SQLException {
-		// SELECT
-		return null;
+		String sql = "SELECT id, first_name, last_name FROM author WHERE id = ?";
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setLong(1, id);
+			resultSet = statement.executeQuery();
+			Author author = null;
+			if(resultSet.next()) {
+				author = new Author();
+				author.setId(resultSet.getLong("id"));
+				author.setFirstName(resultSet.getString("first_name"));
+				author.setLastName(resultSet.getString("last_name"));
+			}
+			return author;
+		} finally {
+			try { resultSet.close(); } catch(SQLException e) {}
+			try { statement.close(); } catch(SQLException e) {}
+		}
 	}
 
 	public List<Author> readAll() throws SQLException {
