@@ -2,25 +2,23 @@ package test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
+
+import dao.AuthorDao;
+import domain.Author;
 
 public class Test {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		// JDBC - Java DataBase Connectivity
 		Class.forName("org.postgresql.Driver");
 		Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/book_catalog_db", "root", "root");
-		Statement s = c.createStatement();
-		ResultSet r = s.executeQuery("SELECT id, first_name, last_name FROM author");
-		while(r.next()) {
-			System.out.println("id = " + r.getLong("id"));
-			System.out.println("first name = " + r.getString("first_name"));
-			System.out.println("last name = " + r.getString("last_name"));
-			System.out.println("-----------------------");
+		AuthorDao authorDao = new AuthorDao();
+		authorDao.setConnection(c);
+		List<Author> authors = authorDao.readAll();
+		for(Author author : authors) {
+			System.out.println(author);
 		}
-		r.close();
-		s.close();
 		c.close();
 	}
 }
