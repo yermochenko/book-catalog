@@ -32,7 +32,7 @@ public class AuthorListServlet extends HttpServlet {
 			AuthorDao authorDao = creator.getAuthorDao();
 			List<Author> authors = authorDao.readAll();
 			req.setAttribute("authors", authors);
-			req.getRequestDispatcher("/WEB-INF/author/list.html").forward(req, resp);
+			req.getRequestDispatcher("/WEB-INF/jsp/author/list.jsp").forward(req, resp);
 		} catch (SQLException e) {
 			throw new ServletException(e);
 		}
